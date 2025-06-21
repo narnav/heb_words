@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block title %}ניחוש מילה דומה{% endblock %}
+
+{% block content %}
+<div style="direction: rtl; text-align: right; font-family: 'Arial', sans-serif; padding: 2em; background-color: #928585;">
+    <h2>ניחוש מילה דומה</h2>
+
+    {% if results %}
+    <form action="/check/" method="post" style="background-color: darkgray;"> 
+        {% for word, items in results %}
+        <p><b>מה המילה הנרדפת ל: 
+           <h2> <span style="margin-right: 18px;font-size: 24"> {{ word|reverse }}</span> </h2>
+            </b></p>
+        <ul style="list-style-type: none; padding-right: 0;">
+            {% for w, defn, sim in items %}
+            <li>
+                <label>
+                    <input type="radio" name="selected" value="{{ w }}" required>
+                    <span style="margin-right: 8px;">
+
+                        {{ defn|reverse }}</span>
+                </label>
+                <!-- {{ w|reverse }}  -->
+            </li>
+            {% endfor %}
+        </ul>
+
+        {% if currect %}
+        <input type="hidden" name="correct_answer" value="{{ currect[0]|reverse }}">
+        {% else %}
+        <input type="hidden" name="correct_answer" value="{{ items[0][0] }}">
+        {% endif %}
+        <input type="hidden" name="original_word" value="{{ original_word }}">
+        {% endfor %}
+        <input type="submit" value="בדוק ניחוש">
+    </form>
+    {% endif %}
+
+    {% if feedback %}
+    <h3 style="color: green;">{{ feedback }}</h3>
+    <a href="/">🔁 שחק שוב</a>
+    {% endif %}
+    <br/>
+    <br/>
+    <br/>
+    <!-- <a href="/clear_history/" class="btn btn-danger">🔁 התחל מהתחלה</a> -->
+    <h1>הציון כרגע: {{ score | default(0) }}</h1>
+</div>
+{% endblock %}

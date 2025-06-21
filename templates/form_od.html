@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>בדיקת דמיון מילים</title>
+</head>
+<body style="background-color: gray;">
+    <h2>השווה מילים בעברית</h2>
+    <form action="/results/" method="post">
+        <label for="words">בחר מילה:</label><br>
+        <!-- <input type="text" name="words" id="words" size="50" value="{{ original_input | default('') }}"><br><br> -->
+        <select name="selected_word" id="selected_word">
+    {% for word in all_words %}
+        <option value="{{ word }}" {% if word == original_input %}selected{% endif %}>{{ word }}</option>
+    {% endfor %}
+</select>
+        <input type="submit" value="בדוק">
+    </form>
+
+    {% if results %}
+    <h3>תוצאות:</h3>
+    <form action="/check/" method="post">
+        {% for word, items in results %}
+            <p><b>
+                 ({{ word|reverse }}) 
+            </b></p>
+            <ul>
+                {% for w, defn, sim in items %}
+                    <li>
+                        <input type="radio" name="selected" value="{{ w }}" required>
+                        <!-- {{ w|reverse }} -->
+                         ({{ defn|reverse }}) 
+                        <!-- – דמיון: {{ sim }} -->
+                    </li>
+                {% endfor %}
+            </ul>
+            <!-- <input type="hidden" name="correct_answer" value="{{ items[0][0] }}"> -->
+             <input type="hidden" name="correct_answer" value="{{ currect[0]|reverse }}">
+           <!-- defff{{items[0][0]}} -->
+           <!-- my{{ currect[0] }} -->
+        {% endfor %}
+        <br>
+        <input type="submit" value="בדוק אם צדקתי">
+    </form>
+    {% endif %}
+
+    {% if feedback %}
+        <h3>{{ feedback }}</h3>
+    {% endif %}
+    <a href="http://127.0.0.1:8000/">start</a>
+     {% if score %}
+  <h1>  {{score}} הציון כרגע:</h1>
+  {% endif %}
+</body>
+</html>
+
