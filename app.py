@@ -14,7 +14,8 @@ from fastapi.staticfiles import StaticFiles
 from build_DB import add_words
 
 # Load model
-model = SentenceTransformer('all-MiniLM-L6-v2')
+model = SentenceTransformer('paraphrase-MiniLM-L3-v2')
+# all-MiniLM-L6-v2
 
 # FastAPI app setup
 app = FastAPI(title="Hebrew Word Similarity")
